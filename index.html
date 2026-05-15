@@ -3,97 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر أزياء - تجربة المنيكان الذكي</title>
+    <title>منصة المنيكان الذكي - تجربة التنسيق الآمنة</title>
     <style>
-        body { font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .product-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; width: 300px; }
-        .product-img { width: 100%; border-radius: 8px; height: 250px; background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #666; font-weight: bold; }
-        .btn-try { background-color: #7b2cbf; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 8px; cursor: pointer; margin-top: 15px; width: 100%; font-weight: bold; transition: 0.3s; }
-        .btn-try:hover { background-color: #5a189a; }
+        /* تحسين الـ Responsiveness ليتناسب مع كل الشاشات والجوالات */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; margin: 0; padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        .product-card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; width: 100%; max-width: 340px; transition: transform 0.3s ease; }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-img { width: 100%; border-radius: 12px; height: 220px; background: linear-gradient(135deg, #e0e0e0, #f5f5f5); display: flex; align-items: center; justify-content: center; color: #666; font-weight: bold; font-size: 18px; }
         
-        /* نافذة المنيكان الافتراضية */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 20px; border-radius: 15px; width: 450px; text-align: center; position: relative; }
-        .close-btn { position: absolute; top: 15px; left: 15px; cursor: pointer; font-size: 20px; font-weight: bold; color: #aa0000; }
+        /* زر تفاعلي مع تأثير حركي (Animation) عند التمرير والضغط */
+        .btn-try { background: linear-gradient(135deg, #7b2cbf, #5a189a); color: white; border: none; padding: 14px 20px; font-size: 16px; border-radius: 10px; cursor: pointer; margin-top: 20px; width: 100%; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(123, 44, 191, 0.3); }
+        .btn-try:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(123, 44, 191, 0.4); }
+        .btn-try:active { transform: scale(0.98); }
         
-        /* هيكل المنيكان الشرعي (بدون رأس وملامح) */
-        .mannequin-container { width: 160px; height: 320px; margin: 20px auto; position: relative; display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.1)); }
-        .neck { width: 24px; height: 18px; background: linear-gradient(135deg, #f3e5f5, #e1bee7); border-radius: 0 0 8px 8px; border: 1px solid rgba(255,255,255,0.5); }
-        .shoulders { width: 110px; height: 35px; background: linear-gradient(135deg, #e0f2f1, #b2dfdb); border-radius: 20px 20px 0 0; border: 1px solid rgba(255,255,255,0.6); }
-        .torso { width: 85px; height: 130px; background: linear-gradient(135deg, #b2dfdb, #80cbc4); margin-top: 3px; border-radius: 5px 5px 25px 25px; border: 1px solid rgba(255,255,255,0.6); box-shadow: inset 0 0 10px rgba(255,255,255,0.5); }
-        .legs { width: 65px; height: 120px; display: flex; justify-content: space-between; margin-top: 4px; }
-        .leg { width: 24px; height: 100%; background: linear-gradient(135deg, #80cbc4, #4db6ac); border-radius: 0 0 12px 12px; border: 1px solid rgba(255,255,255,0.4); }
-        .notice { font-size: 12px; color: #777; margin-top: 10px; }
-
+        /* النافذة المنبثقة وغرفة القياس المتجاوبة */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; padding: 15px; box-sizing: border-box; backdrop-filter: blur(5px); }
+        
+        /* إضافة Animation لظهور النافذة بشكل انسيابي فاخر */
+        .modal-content { background: white; padding: 25px; border-radius: 20px; width: 100%; max-width: 440px; text-align: center; position: relative; animation: slideUp 0.4s ease-out; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .close-btn { position: absolute; top: 15px; left: 20px; cursor: pointer; font-size: 24px; font-weight: bold; color: #999; transition: color 0.2s; }
+        .close-btn:hover { color: #ff4081; }
+        
+        /* المنيكان الكريستالي الشرعي المطور */
+        .mannequin-container { width: 140px; height: 280px; margin: 20px auto; position: relative; display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0px 8px 20px rgba(123, 44, 191, 0.15)); }
+        .neck { width: 22px; height: 16px; background: linear-gradient(135deg, #f3e5f5, #e1bee7); border-radius: 0 0 8px 8px; border: 1px solid rgba(255,255,255,0.6); }
+        .shoulders { width: 100px; height: 30px; background: linear-gradient(135deg, #e0f2f1, #b2dfdb); border-radius: 20px 20px 0 0; border: 1px solid rgba(255,255,255,0.6); }
+        
+        /* تأثير الانتقال التدريجي للألوان (Dynamic Transition Animation) */
+        .torso { width: 80px; height: 110px; background: linear-gradient(135deg, #b2dfdb, #80cbc4); margin-top: 3px; border-radius: 5px 5px 22px 22px; border: 1px solid rgba(255,255,255,0.6); box-shadow: inset 0 0 10px rgba(255,255,255,0.3); transition: background 0.5s ease, transform 0.3s ease; }
+        .legs { width: 60px; height: 110px; display: flex; justify-content: space-between; margin-top: 4px; }
+        .leg { width: 22px; height: 100%; background: linear-gradient(135deg, #80cbc4, #4db6ac); border-radius: 0 0 12px 12px; border: 1px solid rgba(255,255,255,0.4); }
+        
+        /* أزرار تفاعلية مرنة (Flexbox Responsiveness) */
+        .clothes-options { margin-top: 25px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .btn-option { padding: 10px 14px; border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: bold; font-size: 14px; transition: all 0.2s ease; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        .btn-option:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+        
+        .budget-box { margin-top: 20px; font-weight: bold; color: #7b2cbf; background: #f3e5f5; padding: 12px; border-radius: 10px; font-size: 15px; border: 1px dashed #7b2cbf; }
+        .notice { font-size: 11px; color: #888; margin-top: 15px; line-height: 1.4; }
     </style>
 </head>
 <body>
 
-    <!-- كارت المنتج داخل المتجر الإلكتروني -->
     <div class="product-card">
-        <div class="product-img">صورة العباية / الفستان</div>
-        <h2>عباية أنيقة فاخرة</h2>
-        <p>السعر: 350 ريال</p>
-        <button class="btn-try" onclick="openMannequin()">👗 نسّقي مظهرك على المنيكان</button>
+        <div class="product-img">مجموعة تصاميم 2026 👗</div>
+        <h2>عبايات وأزياء راقية</h2>
+        <p style="color: #666; font-size: 14px;">تنسيق ذكي وسريع متوافق مع الضوابط الشرعية</p>
+        <button class="btn-try" onclick="openMannequin()">✨ نسّقي مظهرك على المنيكان</button>
     </div>
 
-    <!-- النافذة المنبثقة لغرفة القياس الافتراضية -->
     <div class="modal" id="mannequinModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeMannequin()">&times;</span>
-            <h3>غرفة التنسيق الافتراضية الآمنة</h3>
-            <p>رؤية متكاملة لتناسق الملابس بضوابط شرعية</p>
+            <h3 style="margin: 0 0 5px 0; color: #333;">غرفة التنسيق الافتراضية</h3>
+            <p style="margin: 0 0 15px 0; color: #666; font-size: 13px;">تغيير ديناميكي فوري وحساب للميزانية</p>
             
-            <!-- المنيكان المحتشم -->
             <div class="mannequin-container">
                 <div class="neck"></div>
                 <div class="shoulders"></div>
-                <div class="torso"></div>
+                <div class="torso" id="mannequinTorso"></div>
                 <div class="legs">
-               
                     <div class="leg"></div>
                     <div class="leg"></div>
                 </div>
             </div>
-                       <!-- أزرار تبديل الملابس بالألوان المباشرة والأسعار -->
-            <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
-                <button onclick="changeOutfit('#1a1a1a', 350)" style="padding: 8px 15px; border: none; border-radius: 5px; background: #1a1a1a; color: white; cursor: pointer; font-weight: bold;">عباية كلاسيك (350 ريال) 🖤</button>
-                <button onclick="changeOutfit('#ff4081', 250)" style="padding: 8px 15px; border: none; border-radius: 5px; background: #ff4081; color: white; cursor: pointer; font-weight: bold;">فستان سهرة (250 ريال) ✨</button>
-                <button onclick="changeOutfit('#0288d1', 180)" style="padding: 8px 15px; border: none; border-radius: 5px; background: #0288d1; color: white; cursor: pointer; font-weight: bold;">طقم كاجوال (180 ريال) 👕</button>
+            
+            <div class="clothes-options">
+                <button class="btn-option" onclick="changeOutfit('#1a1a1a', 350)" style="background: #1a1a1a;">عباية كلاسيك (350R.S) 🖤</button>
+                <button class="btn-option" onclick="changeOutfit('#ff4081', 250)" style="background: #ff4081;">فستان سهرة (250R.S) ✨</button>
+                <button class="btn-option" onclick="changeOutfit('#0288d1', 180)" style="background: #0288d1;">طقم كاجوال (180R.S) 👕</button>
             </div>
 
-
-            <!-- شاشة عرض الميزانية الذكية -->
-            <div style="margin-top: 15px; font-weight: bold; color: #7b2cbf; background: #f3e5f5; padding: 10px; border-radius: 8px;">
-                الميزانية الإجمالية للتنسيق: <span id="totalBudget">0</span> ريال
+            <div class="budget-box">
+                الميزانية الإجمالية للتنسيق: <span id="totalBudget">0</span> ريال سعودي
             </div>
-
-
-            <p class="notice">* المنيكان مصمم بدون رأس وملامح لضمان الخصوصية والتوافق الشرعي.</p>
+            
+            <p class="notice">* تم تصميم المنيكان بدون ملامح أو رأس التزاماً بالخصوصية والضوابط الشرعية للتماثيل رقمياً.</p>
         </div>
     </div>
 
-    <!-- كود الجافا سكريبت للتحكم بفتح وإغلاق النافذة -->
     <script>
         function openMannequin() {
             document.getElementById('mannequinModal').style.display = 'flex';
         }
         function closeMannequin() {
             document.getElementById('mannequinModal').style.display = 'none';
-
-    }
-                  function changeOutfit(color, price) {
-            // 1. إلغاء أي خلفية صور سابقة وتلوين الجذع باللون المختار فوراً
-            let torso = document.querySelector('.torso');
-            torso.style.backgroundImage = 'none';
-            torso.style.backgroundColor = color;
+        }
+        
+        // دالة ديناميكية تفاعلية مطورة لتحديث المنيكان بحركة انسيابية (Scale Animation Effect)
+        function changeOutfit(color, price) {
+            let torso = document.getElementById('mannequinTorso');
             
-            // 2. تحديث شاشة الميزانية تلقائياً بناءً على السعر
+            // إضافة تأثير نبض حركي خفيف عند التبديل لإعطاء شعور بالذكاء الاصطناعي
+            torso.style.transform = 'scale(1.05)';
+            
+            setTimeout(() => {
+                torso.style.background = color;
+                torso.style.transform = 'scale(1)';
+            }, 150);
+            
             document.getElementById('totalBudget').innerText = price;
         }
-
-
-
     </script>
 </body>
 </html>
